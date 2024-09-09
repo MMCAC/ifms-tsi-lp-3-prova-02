@@ -15,55 +15,37 @@ export default class TrabalhoController {
     }
 
     if (!area || typeof area !== "string" || !areasValidas.includes(area)) {
-      mensagensDeErro.push(
-        "A área do trabalho deve ser uma dentre as opções: CAE, CET, CBS, CHCSA e MDIS.",
-      );
+      mensagensDeErro.push("A área do trabalho deve ser uma dentre as opções: CAE, CET, CBS, CHCSA e MDIS.");
     }
 
     if (!codigo || typeof codigo !== "string") {
-      mensagensDeErro.push(
-        "O código do trabalho deve ser composto pelo código da área seguido por 2 dígitos.",
-      );
+      mensagensDeErro.push("O código do trabalho deve ser composto pelo código da área seguido por 2 dígitos.");
     } else {
       const area = codigo.slice(0, -2);
       const digitos = codigo.slice(-2);
 
-      // Verifica se a área está na lista de áreas válidas e se os dois últimos caracteres são dígitos
       if (!areasValidas.includes(area) || !/^\d{2}$/.test(digitos)) {
-        mensagensDeErro.push(
-          "O código do trabalho deve ser composto pelo código da área seguido por 2 dígitos.",
-        );
+        mensagensDeErro.push("O código do trabalho deve ser composto pelo código da área seguido por 2 dígitos.");
       }
     }
 
-    if (
-      !autores ||
-      !Array.isArray(autores) ||
-      autores.length < 2 ||
-      autores.length > 7
+    if (!autores || autores.length < 2 || autores.length > 7
     ) {
       mensagensDeErro.push("O trabalho deve conter entre 2 e 7 autores");
     } else {
-      for (const autor of autores) {
-        if (
-          !autor.nome ||
-          typeof autor.nome !== "string" ||
-          autor.nome.split(" ").length < 2
-        ) {
-          mensagensDeErro.push(
-            "Os nomes dos autores devem conter nome e sobrenome.",
-          );
+      for (let i = 0; i < autores.length; i++) {
+        const autor = autores[i]
+        
+        if (!autor.nome || typeof autor.nome !== "string" || autor.nome.split(" ").length < 2) {
+          mensagensDeErro.push( "Os nomes dos autores devem conter nome e sobrenome.");
         }
 
         if (!autor.genero || (autor.genero !== "M" && autor.genero !== "F")) {
-          mensagensDeErro.push(
-            "O gênero de cada autor deve ser uma dentre as opções M ou F.",
-          );
+          mensagensDeErro.push("O gênero de cada autor deve ser uma dentre as opções M ou F.");
         }
+        
         if (!autor.cpf || !/^\d{11}$/.test(autor.cpf)) {
-          mensagensDeErro.push(
-            "O CPF de cada autor deve conter 11 dígitos e não possuir máscara.",
-          );
+          mensagensDeErro.push("O CPF de cada autor deve conter 11 dígitos e não possuir máscara.");
         }
       }
     }
